@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Morada — Service Hub for Residential Communities</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal: #0B3D4F;
+    --teal-mid: #0e5068;
+    --cyan: #5FD4C8;
+    --cyan-pale: #A8E8DF;
+    --cream: #F5F0E8;
+    --warm-white: #FAFAF7;
+    --ink: #111;
+    --muted: #6B7280;
+    --border: #E5E0D8;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--warm-white);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--teal);
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    right: -120px; top: -120px;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    border: 1px solid rgba(95,212,200,0.12);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    border: 1px solid rgba(95,212,200,0.08);
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 60px 80px 80px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(95,212,200,0.12);
+    border: 1px solid rgba(95,212,200,0.25);
+    color: var(--cyan-pale);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 2px;
+    margin-bottom: 32px;
+    width: fit-content;
+  }
+
+  .badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--cyan);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(52px, 5vw, 72px);
+    color: #fff;
+    line-height: 1.0;
+    margin-bottom: 24px;
+    letter-spacing: -1px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--cyan);
+  }
+
+  .hero-desc {
+    font-size: 17px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.7;
+    max-width: 420px;
+    margin-bottom: 40px;
+    font-weight: 300;
+  }
+
+  .pilot-tag {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(255,255,255,0.4);
+    font-size: 13px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .pilot-tag span {
+    color: var(--cyan-pale);
+  }
+
+  .hero-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 60px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .code-card {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(95,212,200,0.15);
+    border-radius: 4px;
+    padding: 28px 32px;
+    width: 100%;
+    max-width: 420px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .code-card .file-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #FF5F57; }
+  .dot-y { background: #FEBC2E; }
+  .dot-g { background: #28C840; }
+
+  .file-name {
+    color: rgba(255,255,255,0.3);
+    font-size: 11px;
+    margin-left: 6px;
+  }
+
+  .code-line {
+    font-size: 12.5px;
+    line-height: 1.9;
+    color: rgba(255,255,255,0.55);
+  }
+
+  .code-line .kw { color: #C586C0; }
+  .code-line .cl { color: #4EC9B0; }
+  .code-line .st { color: #CE9178; }
+  .code-line .nm { color: #9CDCFE; }
+  .code-line .cm { color: rgba(255,255,255,0.2); }
+  .code-line .indent { display: inline-block; width: 20px; }
+  .code-line .indent2 { display: inline-block; width: 40px; }
+
+  /* SECTION BASE */
+  section { padding: 100px 80px; }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(36px, 3.5vw, 48px);
+    color: var(--teal);
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  .section-sub {
+    font-size: 17px;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 560px;
+    font-weight: 300;
+  }
+
+  /* PROBLEM */
+  .problem {
+    background: var(--cream);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .problem-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+  }
+
+  .stat-block {
+    background: var(--warm-white);
+    padding: 32px 28px;
+    transition: background 0.2s;
+  }
+
+  .stat-block:hover { background: #fff; }
+
+  .stat-block:first-child { border-radius: 4px 0 0 0; }
+  .stat-block:nth-child(2) { border-radius: 0 4px 0 0; }
+  .stat-block:nth-child(3) { border-radius: 0 0 0 4px; }
+  .stat-block:last-child { border-radius: 0 0 4px 0; }
+
+  .stat-number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 40px;
+    color: var(--teal);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  /* STACK */
+  .stack-section { background: var(--teal); }
+  .stack-section .section-title { color: #fff; }
+  .stack-section .section-sub { color: rgba(255,255,255,0.5); }
+  .stack-section .section-label { color: var(--cyan); }
+
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+  }
+
+  .stack-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(95,212,200,0.1);
+    padding: 28px 28px 24px;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .stack-item:hover {
+    background: rgba(95,212,200,0.06);
+    border-color: rgba(95,212,200,0.25);
+  }
+
+  .stack-layer {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 10px;
+    opacity: 0.7;
+  }
+
+  .stack-name {
+    font-size: 15px;
+    color: #fff;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .stack-detail {
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.35);
+    font-family: 'DM Mono', monospace;
+    line-height: 1.6;
+  }
+
+  /* ARCHITECTURE */
+  .arch-section {
+    background: var(--warm-white);
+  }
+
+  .arch-diagram {
+    margin-top: 60px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .arch-layer {
+    padding: 32px 24px;
+    border-right: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+  .arch-layer:last-child { border-right: none; }
+  .arch-layer:hover { background: var(--cream); }
+
+  .arch-layer-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 16px;
+  }
+
+  .arch-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .arch-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--teal);
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+
+  .arch-item-text {
+    font-size: 13px;
+    color: var(--teal);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .arch-item-sub {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    margin-top: 2px;
+  }
+
+  /* DECISIONS */
+  .decisions {
+    background: var(--cream);
+    padding-bottom: 120px;
+  }
+
+  .decisions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-top: 60px;
+  }
+
+  .decision-card {
+    background: var(--warm-white);
+    padding: 36px 36px 32px;
+    transition: box-shadow 0.2s;
+  }
+
+  .decision-card:hover {
+    box-shadow: 0 8px 32px rgba(11,61,79,0.08);
+  }
+
+  .decision-q {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 10px;
+  }
+
+  .decision-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    color: var(--teal);
+    margin-bottom: 14px;
+    line-height: 1.2;
+  }
+
+  .decision-body {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .decision-verdict {
+    display: inline-block;
+    margin-top: 16px;
+    background: rgba(11,61,79,0.06);
+    border-left: 2px solid var(--cyan);
+    padding: 8px 14px;
+    font-size: 12.5px;
+    font-family: 'DM Mono', monospace;
+    color: var(--teal);
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--teal);
+    padding: 60px 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-left .footer-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+
+  .footer-left .footer-role {
+    font-size: 14px;
+    color: rgba(255,255,255,0.4);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+  }
+
+  .footer-links a {
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--cyan); }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-right { display: none; }
+    .hero-left { padding: 60px 32px; }
+    section { padding: 60px 32px; }
+    .problem, .decisions-grid { grid-template-columns: 1fr; gap: 40px; }
+    .stack-grid { grid-template-columns: 1fr 1fr; }
+    .arch-diagram { grid-template-columns: 1fr 1fr; }
+    .arch-layer { border-bottom: 1px solid var(--border); }
+    footer { flex-direction: column; gap: 32px; text-align: center; padding: 48px 32px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="badge">Side Project · In Development</div>
+    <h1>Where neighbors<br><em>become</em><br>a community.</h1>
+    <p class="hero-desc">
+      Morada is a whitelabel mobile platform for residential condominiums.
+      Residents offer their services — pastry chef, accountant, tutor, nail artist —
+      and neighbors discover and hire directly within the building.
+    </p>
+    <div class="pilot-tag">
+      Pilot running at <span>Residencial Jardim, Mauá SP</span>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="code-card">
+      <div class="file-bar">
+        <div class="dot dot-r"></div>
+        <div class="dot dot-y"></div>
+        <div class="dot dot-g"></div>
+        <span class="file-name">ServiceHub.cs</span>
+      </div>
+      <div class="code-line"><span class="kw">namespace</span> <span class="cl">Morada.Domain</span> {</div>
+      <div class="code-line"><span class="indent"></span><span class="kw">public record</span> <span class="cl">Service</span>(</div>
+      <div class="code-line"><span class="indent2"></span><span class="cl">Guid</span> <span class="nm">Id</span>,</div>
+      <div class="code-line"><span class="indent2"></span><span class="cl">string</span> <span class="nm">Title</span>,</div>
+      <div class="code-line"><span class="indent2"></span><span class="cl">Resident</span> <span class="nm">Provider</span>,</div>
+      <div class="code-line"><span class="indent2"></span><span class="cl">Category</span> <span class="nm">Category</span>,</div>
+      <div class="code-line"><span class="indent2"></span><span class="cl">decimal</span> <span class="nm">Price</span></div>
+      <div class="code-line"><span class="indent"></span>);</div>
+      <br>
+      <div class="code-line"><span class="cm">// multi-tenant by design</span></div>
+      <div class="code-line"><span class="indent"></span><span class="kw">public interface</span> <span class="cl">ITenantContext</span> {</div>
+      <div class="code-line"><span class="indent2"></span><span class="cl">Guid</span> <span class="nm">CondominiumId</span> { <span class="kw">get</span>; }</div>
+      <div class="code-line"><span class="indent"></span>}</div>
+      <div class="code-line">}</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem">
+  <div>
+    <p class="section-label">The problem</p>
+    <h2 class="section-title">Talent hidden behind closed doors.</h2>
+    <p class="section-sub">
+      Most residential buildings have dozens of skilled residents — accountants,
+      teachers, chefs, designers — whose neighbors never find out. WhatsApp groups
+      drown in noise. Building boards have no structured way to surface this talent.
+      Morada fixes that.
+    </p>
+  </div>
+  <div class="problem-stats">
+    <div class="stat-block">
+      <div class="stat-number">1</div>
+      <div class="stat-label">Pilot condominium<br>running (Mauá, SP)</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-number">3</div>
+      <div class="stat-label">Apps in one monorepo<br>mobile, web, API</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-number">10h</div>
+      <div class="stat-label">Per week, solo dev,<br>26-week roadmap</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-number">∞</div>
+      <div class="stat-label">Tenants by design<br>whitelabel ready</div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section class="stack-section">
+  <p class="section-label">Technology</p>
+  <h2 class="section-title">Every choice<br>justified.</h2>
+  <p class="section-sub">No cargo-cult stack decisions. Each technology was chosen for a specific reason.</p>
+
+  <div class="stack-grid">
+    <div class="stack-item">
+      <div class="stack-layer">Mobile</div>
+      <div class="stack-name">React Native + Expo SDK 54</div>
+      <div class="stack-detail">iOS-first, single codebase.<br>EAS for production builds.</div>
+    </div>
+    <div class="stack-item">
+      <div class="stack-layer">Web Admin</div>
+      <div class="stack-name">Next.js 16 App Router</div>
+      <div class="stack-detail">Tailwind + shadcn/ui.<br>Vercel edge deployment.</div>
+    </div>
+    <div class="stack-item">
+      <div class="stack-layer">Backend</div>
+      <div class="stack-name">.NET 10 Minimal API</div>
+      <div class="stack-detail">Clean Architecture (light).<br>EF Core + PostgreSQL 16.</div>
+    </div>
+    <div class="stack-item">
+      <div class="stack-layer">Auth</div>
+      <div class="stack-name">Supabase Auth</div>
+      <div class="stack-detail">Custom invite codes.<br>Role-based access per tenant.</div>
+    </div>
+    <div class="stack-item">
+      <div class="stack-layer">Infra</div>
+      <div class="stack-name">Railway + Vercel + EAS</div>
+      <div class="stack-detail">Zero-ops for solo dev.<br>Sentry observability across all apps.</div>
+    </div>
+    <div class="stack-item">
+      <div class="stack-layer">Tooling</div>
+      <div class="stack-name">Turborepo + pnpm</div>
+      <div class="stack-detail">Shared types + UI tokens.<br>Conventional Commits. PRs even solo.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section class="arch-section">
+  <p class="section-label">Architecture</p>
+  <h2 class="section-title">Multi-tenant<br>by design.</h2>
+  <p class="section-sub">Each condominium is an isolated tenant. The same codebase powers unlimited buildings.</p>
+
+  <div class="arch-diagram">
+    <div class="arch-layer">
+      <div class="arch-layer-name">Presentation</div>
+      <div class="arch-item">
+        <div class="arch-dot"></div>
+        <div>
+          <div class="arch-item-text">Mobile App</div>
+          <div class="arch-item-sub">React Native</div>
+        </div>
+      </div>
+      <div class="arch-item">
+        <div class="arch-dot"></div>
+        <div>
+          <div class="arch-item-text">Admin Web</div>
+          <div class="arch-item-sub">Next.js 16</div>
+        </div>
+      </div>
+    </div>
+    <div class="arch-layer">
+      <div class="arch-layer-name">API Layer</div>
+      <div class="arch-item">
+        <div class="arch-dot"></div>
+        <div>
+          <div class="arch-item-text">Minimal API</div>
+          <div class="arch-item-sub">.NET 10</div>
+        </div>
+      </div>
+      <div class="arch-item">
+        <div class="arch-dot"></div>
+        <div>
+          <div class="arch-item-text">Tenant Middleware</div>
+          <div class="arch-item-sub">slug → TenantId</div>
+        </div>
+      </div>
+    </div>
+    <div class="arch-layer">
+      <div class="arch-layer-name">Domain</div>
+      <div class="arch-item">
+        <div class="arch-dot"></div>
+        <div>
+          <div class="arch-item-text">Clean Architecture</div>
+          <div class="arch-item-sub">Use cases / entities</div>
+        </div>
+      </div>
+      <div class="arch-item">
+        <div class="arch-dot"></div>
+        <div>
+          <div class="arch-item-text">EF Core</div>
+          <div class="arch-item-sub">PostgreSQL 16</div>
+        </div>
+      </div>
+    </div>
+    <div class="arch-layer">
+      <div class="arch-layer-name">Cross-cutting</div>
+      <div class="arch-item">
+        <div class="arch-dot"></div>
+        <div>
+          <div class="arch-item-text">Supabase Auth</div>
+          <div class="arch-item-sub">JWT + invite codes</div>
+        </div>
+      </div>
+      <div class="arch-item">
+        <div class="arch-dot"></div>
+        <div>
+          <div class="arch-item-text">Sentry</div>
+          <div class="arch-item-sub">All three apps</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DECISIONS -->
+<section class="decisions">
+  <p class="section-label">Engineering decisions</p>
+  <h2 class="section-title">Trade-offs,<br>documented.</h2>
+  <p class="section-sub">Every non-obvious choice has a reason. Here are four that shaped the architecture.</p>
+
+  <div class="decisions-grid">
+    <div class="decision-card">
+      <div class="decision-q">Decision 01</div>
+      <div class="decision-title">Supabase Auth over Azure AD B2C</div>
+      <div class="decision-body">
+        Azure AD B2C requires an Azure subscription with tenant licensing that conflicts with
+        the whitelabel model — each condominium would need its own tenant.
+        Supabase Auth gives per-project isolation with custom invite codes built-in,
+        at zero marginal cost per tenant.
+      </div>
+      <div class="decision-verdict">→ Supabase: simpler, cheaper, tenant-native</div>
+    </div>
+    <div class="decision-card">
+      <div class="decision-q">Decision 02</div>
+      <div class="decision-title">Railway over Azure App Service</div>
+      <div class="decision-body">
+        Azure App Service is the natural choice for a .NET developer, but at solo-project
+        scale the cognitive overhead of Azure billing, resource groups and networking
+        is disproportionate. Railway gives a production-grade URL with zero infra config,
+        preserving focus for product work.
+      </div>
+      <div class="decision-verdict">→ Railway: right-sized for the stage</div>
+    </div>
+    <div class="decision-card">
+      <div class="decision-q">Decision 03</div>
+      <div class="decision-title">Turborepo monorepo from day one</div>
+      <div class="decision-body">
+        Three apps sharing types and design tokens need a monorepo to stay in sync.
+        Starting with separate repos and migrating later is painful.
+        Turborepo with pnpm workspaces was set up in Sprint 0 so shared-types
+        and ui-tokens are enforced across mobile, web and API from the start.
+      </div>
+      <div class="decision-verdict">→ Monorepo: consistency before velocity</div>
+    </div>
+    <div class="decision-card">
+      <div class="decision-q">Decision 04</div>
+      <div class="decision-title">PR discipline even as solo dev</div>
+      <div class="decision-body">
+        Every feature merge goes through a pull request with CI green — no exceptions,
+        even with no teammates. This creates a linear, reviewable Git history,
+        forces atomic commits, and mirrors the workflow expected in any professional team.
+        It's also the single fastest way to build a portfolio that proves process maturity.
+      </div>
+      <div class="decision-verdict">→ PRs: the habit that compounds</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <div class="footer-name">Pedro Francisco</div>
+    <div class="footer-role">Senior Software Engineer · São Paulo, Brazil</div>
+  </div>
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/in/pedro-rodrigues-francisco" target="_blank">LinkedIn</a>
+    <a href="https://github.com/pedrofrancisco7" target="_blank">GitHub</a>
+    <a href="mailto:pedro.francisco@msn.com">Email</a>
+  </div>
+</footer>
+
+</body>
+</html>
